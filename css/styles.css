@@ -1,0 +1,55 @@
+body {
+  background-color: #313131;
+  color: #dadada;
+}
+
+.card {
+  width: 200px;
+  height: auto;
+  margin-top: 0px;
+  border: solid #313131 5px;
+}
+
+.card-image {
+  margin-top: -80px;
+  margin-left: -50px;
+  width: 280px;
+  height: auto;
+  margin-top: 0px;
+}
+
+.visible {
+  transition: all 2s ease;
+  transform: rotateY(0deg);
+}
+
+.hidden {
+  border: solid #313131 0px;  
+  transition: all 2s ease;
+  transform: rotateY(90deg);
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-around;
+}
+
+.common:hover {
+  border: solid #ebebeb 5px;
+}
+
+.rare:hover {
+  border: solid midnightblue 5px;
+}
+
+.epic:hover {
+  border: solid rebeccapurple 5px;
+}
+
+.legendary:hover {
+  border: solid goldenrod 5px;
+}
