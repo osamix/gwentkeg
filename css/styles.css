@@ -3,29 +3,45 @@ body {
   color: #dadada;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .card {
   width: 200px;
   height: auto;
-  margin-top: 0px;
-  border: solid #313131 5px;
+  margin-top: 70px;
+  margin-left: -100px;
+  /*border: solid #313131 5px;*/
+  /*outline: solid 5px #313131;*/
+  /*transition: outline 1s linear;*/
+  outline-style: solid;
+  outline-width: 5px;
+  outline-color: #313131;
+  transition: all 0.5s ease;
+  position: absolute;
 }
 
 .card-image {
-  margin-top: -80px;
-  margin-left: -50px;
+  /*margin-top: -80px;*/
+  margin-left: -160px;
   width: 280px;
   height: auto;
   margin-top: 0px;
+  position: absolute;
 }
 
 .visible {
-  transition: all 2s ease;
+  transition: all 0.5s ease;
   transform: rotateY(0deg);
 }
 
 .hidden {
   border: solid #313131 0px;  
-  transition: all 2s ease;
+  transition: all 0.5s ease;
   transform: rotateY(90deg);
 }
 
@@ -34,22 +50,51 @@ body {
 }
 
 .cards {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(5, 300px);
+  justify-items: center;
+  grid-gap: 100px;
 }
 
-.common:hover {
-  border: solid #ebebeb 5px;
+.carddata {
+  display: grid;
+  grid-template-rows: 370px 35px 1fr;
+  column-width: 300px;
+  justify-items: center;
 }
 
-.rare:hover {
-  border: solid midnightblue 5px;
+.cardname {
+  width: 200px;
 }
 
-.epic:hover {
-  border: solid rebeccapurple 5px;
+.cardname.common,
+.cardinfo.common {  
+  border-left: 3px solid #ebebeb;
 }
 
-.legendary:hover {
-  border: solid goldenrod 5px;
+.cardinfo {
+  width: 200px;
+  text-align: justify;
+}
+
+
+
+.card.common:hover {
+  outline-color: #ebebeb;
+  outline-width: 10px;
+}
+
+.card.rare:hover {
+  outline-color:midnightblue;
+  outline-width: 10px;
+}
+
+.card.epic:hover {
+  outline-color:rebeccapurple;
+  outline-width: 10px;
+}
+
+.card.legendary:hover {
+  outline-color:goldenrod;
+  outline-width: 10px;
 }

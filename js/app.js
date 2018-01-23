@@ -45,11 +45,12 @@ function makeCards() {
 
 function getCardData() {
   leCards.map(card => fetch(card).then(data => data.json().then(dat => {
-    const cardName = dat.name;
+    const cardName = dat.name.toUpperCase();
+    const info = dat.info;
     const faction = dat.faction.name.split('').splice(0,2).join('');
     const rarity = dat.variations[0].rarity.name.toLowerCase();
     fetch(dat.variations[0].href).then(data => data.json().then(dat => {
-      cardsPlace.innerHTML += `<div><h2>${faction}</h2><img class="card ${rarity} shown" src="./src/${faction}.png"><img class="card-image hidden" src="${dat.art.mediumsizeImage}"></div>`;
+      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card ${rarity} shown" src="./src/${faction}.png"><img class="card-image hidden" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity}">${cardName}</div><div class="cardinfo ${rarity}">${info}</div></div></div>`;
     }));
   })));
   let cardBack = document.querySelectorAll('img');
@@ -77,8 +78,10 @@ cardsPlace.addEventListener('click', function (e) {
   if (e.target.classList.contains('shown')) {
     e.target.classList.remove('shown');
     e.target.classList.add('hidden');
-    e.target.nextSibling.classList.remove('hidden');
-    e.target.nextSibling.classList.add('visible');
+    setTimeout( () => {
+      e.target.nextSibling.classList.remove('hidden');
+      e.target.nextSibling.classList.add('visible');
+    }, 500);
   }
 });
 button.addEventListener('click', openkeg);
