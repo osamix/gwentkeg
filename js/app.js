@@ -1,5 +1,6 @@
 const button = document.querySelector('button');
 const cardsPlace = document.querySelector('.cards');
+const continueButton = document.querySelector('.pickthree');
 
 const commonURL = 'https://api.gwentapi.com/v0/cards/rarities/gGlnI525WLailI_mBFFiSw?limit=62';
 const rareURL = 'https://api.gwentapi.com/v0/cards/rarities/-naHV1zlVuCFll-j-7T1ow?limit=92';
@@ -21,6 +22,7 @@ function countProb() {
   console.log(numbers, fifthNumber);
 }
 let leCards = [];
+let fifthCard = [];
 
 function makeCards() {
   leCards = numbers.map(numb => {
@@ -35,11 +37,17 @@ function makeCards() {
     }
   });
   if (fifthNumber < 78) {
-    leCards.push(cards[2][Math.round(Math.random() * 92)].href);
+    for (let i = 0; i < 3; i++) {
+      fifthCard.push(cards[2][Math.round(Math.random() * 92)].href);      
+    }
   } else if (fifthNumber < 96) {
-    leCards.push(cards[3][Math.round(Math.random() * 114)].href);
+    for (let i = 0; i < 3; i++) {
+      fifthCard.push(cards[3][Math.round(Math.random() * 114)].href);      
+    }    
   } else {
-    leCards.push(cards[1][Math.round(Math.random() * 89)].href);
+    for (let i = 0; i < 3; i++) {
+      fifthCard.push(cards[1][Math.round(Math.random() * 89)].href);      
+    }     
   }
 }
 
@@ -59,6 +67,7 @@ function getCardData() {
 
 
 let cardImage;
+let cardCount = 0;
 
 function openkeg() {
   cardsPlace.innerHTML = '';
@@ -75,8 +84,8 @@ function openkeg() {
 }
 
 cardsPlace.addEventListener('click', function (e) {
+  console.log(cardCount);
   const cardB = e.target;
-  console.log(cardB);
   const cardI = cardB.nextSibling;
   const cardN = cardI.parentNode.nextSibling;
   const cardO = cardN.nextSibling;
@@ -94,6 +103,11 @@ cardsPlace.addEventListener('click', function (e) {
     setTimeout( () => {
       cardO.classList.remove('rolledin');
       cardO.classList.add('rolledout');
+      cardCount++;
+      if (cardCount === 4) {
+        continueButton.classList.add('show');
+        cardCount = 0;
+      }
     }, 1500);
   }
 });

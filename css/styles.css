@@ -4,10 +4,11 @@ body {
 }
 
 .container {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
+  grid-template-rows: 100px 1fr 100px;
   align-items: center;
-  flex-direction: column;
+  grid-gap: 20px;
 }
 
 .card {
@@ -18,7 +19,7 @@ body {
   outline-style: solid;
   outline-width: 5px;
   outline-color: #313131;
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
   position: absolute;
 }
 
@@ -60,7 +61,7 @@ body {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(5, 300px);
+  grid-template-columns: repeat(4, 300px);
   justify-items: center;
   grid-gap: 50px;
   grid-auto-flow: row;
@@ -133,4 +134,12 @@ body {
 .card.legendary:hover {
   outline-color:goldenrod;
   outline-width: 10px;
+}
+
+.pickthree {
+  opacity: 0;
+}
+
+.pickthree.show {
+  opacity: 1;
 }
