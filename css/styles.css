@@ -59,12 +59,20 @@ body {
   cursor: pointer;
 }
 
+
 .cards {
   display: grid;
-  grid-template-columns: repeat(4, 300px);
   justify-items: center;
   grid-gap: 50px;
   grid-auto-flow: row;
+}
+
+.cards.cardsfour {  
+  grid-template-columns: repeat(4, 300px);
+}
+
+.cards.cardsthree {  
+  grid-template-columns: repeat(3, 300px);
 }
 
 .carddata {

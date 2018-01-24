@@ -38,20 +38,21 @@ function makeCards() {
   });
   if (fifthNumber < 78) {
     for (let i = 0; i < 3; i++) {
-      fifthCard.push(cards[2][Math.round(Math.random() * 92)].href);      
+      fifthCard.push(cards[2][Math.round(Math.random() * 92)].href);
     }
   } else if (fifthNumber < 96) {
     for (let i = 0; i < 3; i++) {
-      fifthCard.push(cards[3][Math.round(Math.random() * 114)].href);      
+      fifthCard.push(cards[3][Math.round(Math.random() * 114)].href);
     }    
   } else {
     for (let i = 0; i < 3; i++) {
-      fifthCard.push(cards[1][Math.round(Math.random() * 89)].href);      
+      fifthCard.push(cards[1][Math.round(Math.random() * 89)].href);
     }     
   }
 }
 
 function getCardData() {
+  cardsPlace.classList.add('cardsfour');
   leCards.map(card => fetch(card).then(data => data.json().then(dat => {
     const cardName = dat.name.toUpperCase();
     const info = dat.info;
@@ -111,4 +112,22 @@ cardsPlace.addEventListener('click', function (e) {
     }, 1500);
   }
 });
+
+function pickFromThree() {
+  cardsPlace.innerHTML = "";
+  cardsPlace.classList.remove('cardsfour');
+  cardsPlace.classList.add('cardsthree');
+  continueButton.classList.remove('show');
+  fifthCard.map(card => fetch(card).then(data => data.json().then(dat => {
+    const cardName = dat.name.toUpperCase();
+    const info = dat.info;
+    const faction = dat.faction.name.split('').splice(0,2).join('');
+    const rarity = dat.variations[0].rarity.name.toLowerCase();
+    fetch(dat.variations[0].href).then(data => data.json().then(dat => {
+      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card-image visible" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity} rolledout">${cardName}</div><div class="cardinfo ${rarity} rolledout">${info}</div></div></div>`;
+    }));
+  })));
+}
+
+continueButton.addEventListener('click', pickFromThree);
 button.addEventListener('click', openkeg);
