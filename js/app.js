@@ -25,7 +25,7 @@ let leCards = [];
 function makeCards() {
   leCards = numbers.map(numb => {
     if (numb < 72.41) {
-      return cards[0][Math.round(Math.random() * 62)].href;     
+      return cards[0][Math.round(Math.random() * 62)].href;
     } else if (numb < 93.88) {
       return cards[2][Math.round(Math.random() * 92)].href;
     } else if (numb < 98.93) {
@@ -33,13 +33,13 @@ function makeCards() {
     } else {
       return cards[1][Math.round(Math.random() * 89)].href;
     }
-  })
+  });
   if (fifthNumber < 78) {
-    leCards.push(cards[2][Math.round(Math.random() * 92)].href)
+    leCards.push(cards[2][Math.round(Math.random() * 92)].href);
   } else if (fifthNumber < 96) {
-    leCards.push(cards[3][Math.round(Math.random() * 114)].href)
+    leCards.push(cards[3][Math.round(Math.random() * 114)].href);
   } else {
-    leCards.push(cards[1][Math.round(Math.random() * 89)].href)
+    leCards.push(cards[1][Math.round(Math.random() * 89)].href);
   }
 }
 
@@ -50,7 +50,7 @@ function getCardData() {
     const faction = dat.faction.name.split('').splice(0,2).join('');
     const rarity = dat.variations[0].rarity.name.toLowerCase();
     fetch(dat.variations[0].href).then(data => data.json().then(dat => {
-      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card ${rarity} shown" src="./src/${faction}.png"><img class="card-image hidden" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity}">${cardName}</div><div class="cardinfo ${rarity}">${info}</div></div></div>`;
+      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card ${rarity} shown" src="./src/${faction}.png"><img class="card-image hidden" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity} rolledin">${cardName}</div><div class="cardinfo ${rarity} rolledin">${info}</div></div></div>`;
     }));
   })));
   let cardBack = document.querySelectorAll('img');
@@ -75,13 +75,26 @@ function openkeg() {
 }
 
 cardsPlace.addEventListener('click', function (e) {
-  if (e.target.classList.contains('shown')) {
-    e.target.classList.remove('shown');
-    e.target.classList.add('hidden');
+  const cardB = e.target;
+  console.log(cardB);
+  const cardI = cardB.nextSibling;
+  const cardN = cardI.parentNode.nextSibling;
+  const cardO = cardN.nextSibling;
+  if (cardB.classList.contains('shown')) {
+    cardB.classList.remove('shown');
+    cardB.classList.add('hidden');
     setTimeout( () => {
-      e.target.nextSibling.classList.remove('hidden');
-      e.target.nextSibling.classList.add('visible');
+      cardI.classList.remove('hidden');
+      cardI.classList.add('visible');
     }, 500);
+    setTimeout( () => {
+      cardN.classList.remove('rolledin');
+      cardN.classList.add('rolledout');
+    }, 1000);
+    setTimeout( () => {
+      cardO.classList.remove('rolledin');
+      cardO.classList.add('rolledout');
+    }, 1500);
   }
 });
 button.addEventListener('click', openkeg);

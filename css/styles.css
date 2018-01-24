@@ -15,9 +15,6 @@ body {
   height: auto;
   margin-top: 70px;
   margin-left: -100px;
-  /*border: solid #313131 5px;*/
-  /*outline: solid 5px #313131;*/
-  /*transition: outline 1s linear;*/
   outline-style: solid;
   outline-width: 5px;
   outline-color: #313131;
@@ -45,6 +42,18 @@ body {
   transform: rotateY(90deg);
 }
 
+.rolledin {
+  opacity: 0;
+  transition: all 0.5s ease;
+  height: 0%;
+}
+
+.rolledout {
+  opacity: 1;
+  transition: all 0.5s ease;
+  height: 100%;
+}
+
 .card:hover {
   cursor: pointer;
 }
@@ -53,18 +62,26 @@ body {
   display: grid;
   grid-template-columns: repeat(5, 300px);
   justify-items: center;
-  grid-gap: 100px;
+  grid-gap: 50px;
+  grid-auto-flow: row;
 }
 
 .carddata {
   display: grid;
-  grid-template-rows: 370px 35px 1fr;
+  grid-template-rows: 370px 50px 1fr;
+  grid-gap: 10px;
   column-width: 300px;
   justify-items: center;
 }
 
 .cardname {
+  display: grid;
+  align-items: center;
+  text-align: center;  
+  padding: 0 10px;
   width: 200px;
+  font-size: 18px;
+  background-color: #222222;
 }
 
 .cardname.common,
@@ -72,9 +89,28 @@ body {
   border-left: 3px solid #ebebeb;
 }
 
+.cardname.rare,
+.cardinfo.rare {  
+  border-left: 3px solid midnightblue;
+}
+
+.cardname.epic,
+.cardinfo.epic {  
+  border-left: 3px solid rebeccapurple;
+}
+
+.cardname.legendary,
+.cardinfo.legendary {  
+  border-left: 3px solid goldenrod;
+}
+
 .cardinfo {
+  display: grid;
+  align-items: center;
   width: 200px;
   text-align: justify;
+  padding: 10px;
+  background-color: #222222;
 }
 
 
