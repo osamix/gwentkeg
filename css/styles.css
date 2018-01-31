@@ -1,6 +1,51 @@
+:root {
+  --background: #111111;
+}
+
+@font-face {
+  font-family: gwentFont;
+  src: url(../src/gwent.ttf);
+}
+
+h1 {
+  font-family: gwentFont;
+  font-size: 80px;
+}
+
 body {
-  background-color: #313131;
+  background-color: var(--background);
   color: #dadada;
+}
+
+button {
+/*  width: 120px;
+  height: 60px;*/
+  background: #663300;
+  border: 3px solid #ac7339;
+  color: white;
+  font-size: 20px;
+  padding: 3px 10px;
+  cursor: pointer;
+  display: none;
+}
+
+button.show {
+  display: block;
+}
+
+.main {
+  max-width: 1680px;
+  min-height: 945px;
+  display: grid;
+  grid-template-columns: 1fr 1260px;
+  margin: 2rem auto;
+  background-image: url(../src/shupe.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.shupe {
+  background-color: rgba(0,0,0,0.8);
 }
 
 .container {
@@ -9,6 +54,7 @@ body {
   grid-template-rows: 100px 1fr 100px;
   align-items: center;
   grid-gap: 20px;
+  background-color: rgba(0,0,0,0.8);
 }
 
 .card {
@@ -18,7 +64,7 @@ body {
   margin-left: -100px;
   outline-style: solid;
   outline-width: 5px;
-  outline-color: #313131;
+  outline-color: var(--background);
   transition: all 0.2s ease;
   position: absolute;
 }
@@ -38,7 +84,7 @@ body {
 }
 
 .hidden {
-  border: solid #313131 0px;  
+  border: solid var(--background) 0px;  
   transition: all 0.5s ease;
   transform: rotateY(90deg);
 }
@@ -63,7 +109,7 @@ body {
 .cards {
   display: grid;
   justify-items: center;
-  grid-gap: 50px;
+  grid-gap: 20px;
   grid-auto-flow: row;
 }
 

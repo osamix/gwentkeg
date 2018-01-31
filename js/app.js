@@ -1,4 +1,4 @@
-const button = document.querySelector('button');
+const button = document.querySelector('.ok');
 const cardsPlace = document.querySelector('.cards');
 const continueButton = document.querySelector('.pickthree');
 
@@ -71,6 +71,7 @@ let cardImage;
 let cardCount = 0;
 
 function openkeg() {
+  button.classList.remove('show');
   cardsPlace.innerHTML = '';
   cards.sort();
   countProb();
@@ -118,6 +119,7 @@ function pickFromThree() {
   cardsPlace.classList.remove('cardsfour');
   cardsPlace.classList.add('cardsthree');
   continueButton.classList.remove('show');
+  button.classList.add('show');
   fifthCard.map(card => fetch(card).then(data => data.json().then(dat => {
     const cardName = dat.name.toUpperCase();
     const info = dat.info;
