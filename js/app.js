@@ -10,16 +10,16 @@ const urls = [commonURL, rareURL, epicURL, legendaryURL];
 
 let pickedthird = false;
 let cardImageUrl = '';
-const brokenImages = ['https://api.gwentapi.com/media/ronvid-of-small-marsh-1-medium.png', 'https://api.gwentapi.com/media/dol-blathanna-swordmaster-1-medium.png', 'https://api.gwentapi.com/media/heymaey-battle-maiden-1-medium.png', 'https://api.gwentapi.com/media/expired-ale-1-medium.png', 'https://api.gwentapi.com/media/catapult-1-medium.png', 'https://api.gwentapi.com/media/mahakam-ale-1-medium.png', 'https://api.gwentapi.com/media/crow-s-eye-1-medium.png'];
+const brokenImages = ['https://api.gwentapi.com/media/ronvid-of-small-marsh-1-medium.png', 'https://api.gwentapi.com/media/dol-blathanna-swordmaster-1-medium.png', 'https://api.gwentapi.com/media/heymaey-battle-maiden-1-medium.png', 'https://api.gwentapi.com/media/expired-ale-1-medium.png', 'https://api.gwentapi.com/media/catapult-1-medium.png', 'https://api.gwentapi.com/media/mahakam-ale-1-medium.png', 'https://api.gwentapi.com/media/crow-s-eye-1-medium.png', 'https://api.gwentapi.com/media/slyzard-1-medium.png', 'https://api.gwentapi.com/media/she-troll-of-vergen-1-medium.png', 'https://api.gwentapi.com/media/hattori-1-medium.png'];
 const cards = [];
-const promises = urls.map(url => fetch(url).then(data => data.json().then(dat => cards.push(dat.results))));
+urls.map(url => fetch(url).then(data => data.json().then(dat => cards.push(dat.results))));
 let number = 0;
 let fifthNumber = 0;
 let numbers = [];
-const allCardImages = [];
+let allCardImages = [];
 
 function countProb() {
-  for(let i = 0; i < 4; i++) {
+  for (let i = 0; i < 4; i++) {
     number = parseFloat((Math.random() * 100).toFixed(2));
     numbers.push(number);
   }
@@ -37,9 +37,8 @@ function makeCards() {
       return cards[2][Math.round(Math.random() * 92)].href;
     } else if (numb < 98.93) {
       return cards[3][Math.round(Math.random() * 114)].href;
-    } else {
-      return cards[1][Math.round(Math.random() * 89)].href;
     }
+    return cards[1][Math.round(Math.random() * 89)].href;
   });
   if (fifthNumber < 78) {
     for (let i = 0; i < 3; i++) {
@@ -48,11 +47,11 @@ function makeCards() {
   } else if (fifthNumber < 96) {
     for (let i = 0; i < 3; i++) {
       fifthCard.push(cards[3][Math.round(Math.random() * 114)].href);
-    }    
+    }
   } else {
     for (let i = 0; i < 3; i++) {
       fifthCard.push(cards[1][Math.round(Math.random() * 89)].href);
-    }     
+    }
   }
 }
 
@@ -80,8 +79,11 @@ function getCardData() {
 let cardCount = 0;
 
 function openkeg() {
+  allCardImages = [];
   button.classList.remove('show');
   cardsPlace.innerHTML = '';
+  cardsPlace.classList.remove('cardsfive');
+  cardsPlace.classList.add('cardsfour');
   cards.sort();
   countProb();
   makeCards();
@@ -100,15 +102,15 @@ function clickCards(e) {
     if (cardB.classList.contains('shown')) {
       cardB.classList.remove('shown');
       cardB.classList.add('hidden');
-      setTimeout( () => {
+      setTimeout(() => {
         cardI.classList.remove('hidden');
         cardI.classList.add('visible');
       }, 200);
-      setTimeout( () => {
+      setTimeout(() => {
         cardN.classList.remove('rolledin');
         cardN.classList.add('rolledout');
       }, 400);
-      setTimeout( () => {
+      setTimeout(() => {
         cardO.classList.remove('rolledin');
         cardO.classList.add('rolledout');
         cardCount++;
@@ -117,32 +119,48 @@ function clickCards(e) {
           cardCount = 0;
         }
       }, 700);
-    }    
+    }
   } else if (cardsPlace.classList.contains('cardsthree') && pickedthird === false) {
     pickedthird = true;
     e.target.classList.add('highlighted');
-    allCardImages.push(e.target.src);
-    console.log(allCardImages);
+    setTimeout(() => {
+      allCardImages.push(e.target.src);
+      console.log(allCardImages);
+      cardsPlace.innerHTML = '';
+      cardsPlace.classList.remove('cardsthree');
+      cardsPlace.classList.add('cardsfive');
+      allCardImages.map(url => {
+        cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card-image visible final" src='${url}'></div></div>`;
+        return cardsPlace.innerHTML;
+      });
+      button.innerText = 'open next keg';
+      button.classList.add('show');
+      fifthCard = [];
+      pickedthird = false;
+    }, 800);
   }
 }
 
 function pickFromThree() {
-  cardsPlace.innerHTML = "";
+  cardsPlace.innerHTML = '';
   cardsPlace.classList.remove('cardsfour');
   cardsPlace.classList.add('cardsthree');
   continueButton.classList.remove('show');
-  button.classList.add('show');
   fifthCard.map(card => fetch(card).then(data => data.json().then(dat => {
     const cardName = dat.name.toUpperCase();
     const info = dat.info;
-    const faction = dat.faction.name.split('').splice(0,2).join('');
     const rarity = dat.variations[0].rarity.name.toLowerCase();
     fetch(dat.variations[0].href).then(data => data.json().then(dat => {
-      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card-image visible ${rarity}" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity} rolledout">${cardName}</div><div class="cardinfo ${rarity} rolledout">${info}</div></div></div>`;
+      if (!brokenImages.includes(dat.art.mediumsizeImage)) {
+        cardImageUrl = dat.art.mediumsizeImage;
+      } else {
+        cardImageUrl = 'src/acard.png';
+      }
+      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card-image visible" style="cursor:pointer" src="${cardImageUrl}"></div><div class="cardname ${rarity} rolledout">${cardName}</div><div class="cardinfo ${rarity} rolledout">${info}</div></div></div>`;
     }));
   })));
 }
 
 continueButton.addEventListener('click', pickFromThree);
 button.addEventListener('click', openkeg);
-cardsPlace.addEventListener('click', clickCards) 
+cardsPlace.addEventListener('click', clickCards);
