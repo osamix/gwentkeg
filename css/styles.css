@@ -79,25 +79,25 @@ button.show {
 }
 
 .visible {
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
   transform: rotateY(0deg);
 }
 
 .hidden {
   border: solid var(--background) 0px;  
-  transition: all 0.5s ease;
+  transition: all 0.2s ease;
   transform: rotateY(90deg);
 }
 
 .rolledin {
   opacity: 0;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   height: 0%;
 }
 
 .rolledout {
   opacity: 1;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   height: 100%;
 }
 
@@ -196,4 +196,9 @@ button.show {
 
 .pickthree.show {
   opacity: 1;
+}
+
+.highlighted {
+  transform: scale(1.4);
+  transition: all 0.2s ease;
 }

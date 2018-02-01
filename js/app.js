@@ -8,11 +8,16 @@ const epicURL = 'https://api.gwentapi.com/v0/cards/rarities/V_ImiYfTVhG_WaAOof9R
 const legendaryURL = 'https://api.gwentapi.com/v0/cards/rarities/u0zNKy4EULa_VU4JD5r4EA?limit=89';
 const urls = [commonURL, rareURL, epicURL, legendaryURL];
 
+let pickedthird = false;
+let cardImageUrl = '';
+const brokenImages = ['https://api.gwentapi.com/media/ronvid-of-small-marsh-1-medium.png', 'https://api.gwentapi.com/media/dol-blathanna-swordmaster-1-medium.png', 'https://api.gwentapi.com/media/heymaey-battle-maiden-1-medium.png', 'https://api.gwentapi.com/media/expired-ale-1-medium.png', 'https://api.gwentapi.com/media/catapult-1-medium.png', 'https://api.gwentapi.com/media/mahakam-ale-1-medium.png', 'https://api.gwentapi.com/media/crow-s-eye-1-medium.png'];
 const cards = [];
 const promises = urls.map(url => fetch(url).then(data => data.json().then(dat => cards.push(dat.results))));
 let number = 0;
 let fifthNumber = 0;
 let numbers = [];
+const allCardImages = [];
+
 function countProb() {
   for(let i = 0; i < 4; i++) {
     number = parseFloat((Math.random() * 100).toFixed(2));
@@ -56,18 +61,22 @@ function getCardData() {
   leCards.map(card => fetch(card).then(data => data.json().then(dat => {
     const cardName = dat.name.toUpperCase();
     const info = dat.info;
-    const faction = dat.faction.name.split('').splice(0,2).join('');
+    const faction = dat.faction.name.split('').splice(0, 2).join('');
     const rarity = dat.variations[0].rarity.name.toLowerCase();
     fetch(dat.variations[0].href).then(data => data.json().then(dat => {
-      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card ${rarity} shown" src="./src/${faction}.png"><img class="card-image hidden" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity} rolledin">${cardName}</div><div class="cardinfo ${rarity} rolledin">${info}</div></div></div>`;
+      if (!brokenImages.includes(dat.art.mediumsizeImage)) {
+        cardImageUrl = dat.art.mediumsizeImage;
+      } else {
+        cardImageUrl = 'src/acard.png';
+      }
+      allCardImages.push(cardImageUrl);
+      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card ${rarity} shown" src="./src/${faction}.png"><img class="card-image hidden ${rarity}" src="${cardImageUrl}"></div><div class="cardname ${rarity} rolledin">${cardName}</div><div class="cardinfo ${rarity} rolledin">${info}</div></div></div>`;
     }));
   })));
-  let cardBack = document.querySelectorAll('img');
+  const cardBack = document.querySelectorAll('img');
   console.log(cardBack);
 }
 
-
-let cardImage;
 let cardCount = 0;
 
 function openkeg() {
@@ -77,42 +86,45 @@ function openkeg() {
   countProb();
   makeCards();
   getCardData();
-
-  cardImage = document.querySelectorAll('.card-image');
-  console.log(cards);
-  console.log(leCards);
   leCards = [];
   numbers = [];
 }
 
-cardsPlace.addEventListener('click', function (e) {
+function clickCards(e) {
   console.log(cardCount);
-  const cardB = e.target;
-  const cardI = cardB.nextSibling;
-  const cardN = cardI.parentNode.nextSibling;
-  const cardO = cardN.nextSibling;
-  if (cardB.classList.contains('shown')) {
-    cardB.classList.remove('shown');
-    cardB.classList.add('hidden');
-    setTimeout( () => {
-      cardI.classList.remove('hidden');
-      cardI.classList.add('visible');
-    }, 500);
-    setTimeout( () => {
-      cardN.classList.remove('rolledin');
-      cardN.classList.add('rolledout');
-    }, 1000);
-    setTimeout( () => {
-      cardO.classList.remove('rolledin');
-      cardO.classList.add('rolledout');
-      cardCount++;
-      if (cardCount === 4) {
-        continueButton.classList.add('show');
-        cardCount = 0;
-      }
-    }, 1500);
+  if (e.target.classList.contains('card')) {
+    const cardB = e.target;
+    const cardI = cardB.nextSibling;
+    const cardN = cardI.parentNode.nextSibling;
+    const cardO = cardN.nextSibling;
+    if (cardB.classList.contains('shown')) {
+      cardB.classList.remove('shown');
+      cardB.classList.add('hidden');
+      setTimeout( () => {
+        cardI.classList.remove('hidden');
+        cardI.classList.add('visible');
+      }, 200);
+      setTimeout( () => {
+        cardN.classList.remove('rolledin');
+        cardN.classList.add('rolledout');
+      }, 400);
+      setTimeout( () => {
+        cardO.classList.remove('rolledin');
+        cardO.classList.add('rolledout');
+        cardCount++;
+        if (cardCount === 4) {
+          continueButton.classList.add('show');
+          cardCount = 0;
+        }
+      }, 700);
+    }    
+  } else if (cardsPlace.classList.contains('cardsthree') && pickedthird === false) {
+    pickedthird = true;
+    e.target.classList.add('highlighted');
+    allCardImages.push(e.target.src);
+    console.log(allCardImages);
   }
-});
+}
 
 function pickFromThree() {
   cardsPlace.innerHTML = "";
@@ -126,10 +138,11 @@ function pickFromThree() {
     const faction = dat.faction.name.split('').splice(0,2).join('');
     const rarity = dat.variations[0].rarity.name.toLowerCase();
     fetch(dat.variations[0].href).then(data => data.json().then(dat => {
-      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card-image visible" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity} rolledout">${cardName}</div><div class="cardinfo ${rarity} rolledout">${info}</div></div></div>`;
+      cardsPlace.innerHTML += `<div class="carddata"><div class="cardimages"><img class="card-image visible ${rarity}" src="${dat.art.mediumsizeImage}"></div><div class="cardname ${rarity} rolledout">${cardName}</div><div class="cardinfo ${rarity} rolledout">${info}</div></div></div>`;
     }));
   })));
 }
 
 continueButton.addEventListener('click', pickFromThree);
 button.addEventListener('click', openkeg);
+cardsPlace.addEventListener('click', clickCards) 
